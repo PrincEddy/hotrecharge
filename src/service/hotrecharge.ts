@@ -26,6 +26,16 @@ export default class HotRecharge {
   private getDataBundle = 'agents/get-data-bundles';
   /** The endpoint for getting end user balance */
   private endUserBalance = 'agents/enduser-balance?targetmobile=';
+  /**The endpoint of getting agent zesa wallet balance */
+  private zesaWalletBalance = "agents/wallet-balance-zesa";
+  /**The endpoint of checking zesa customer meter number */
+  private checkZesaCustomer = "agents/check-customer-zesa";
+  /**The end point of recharging zesa meter number */
+  private rechargeZesaCustomer = "agents/recharge-zesa";
+  /**
+   The endpoint of querying zesa token 
+   */
+  private quereyZesaCustomerToken = "agents/query-zesa-transaction";
   /** The end for querying a transaction */
   private queryTransaction = 'agents/query-transaction?agentReference=';
   /** Headers to be passed to the https request */
@@ -70,6 +80,56 @@ export default class HotRecharge {
     // process the request with axios
     return await this.processHttpsGetRequest();
   }
+
+  /**
+   Get agent Zesa wallet Balance
+   */
+
+   public async getAgentZesaWalletBalance() {
+     this.url = this.rootEndpoint+this.apiVersion + this.zesaWalletBalance;
+     return await this.processHttpsGetRequest();
+   }
+
+   /**
+    check zesa meter number
+    @param meterNumber End user zesa meter number
+    */
+public async checkZesaMeter(meterNumber:string){
+  this.url = this.rootEndpoint+this.apiVersion+this.checkZesaCustomer;
+  return await this.processHttpsPostRequest({"MeterNumber":meterNumber});
+}
+
+
+/**
+ recharge zesa customer 
+ @param amount End user recharge amount
+ @param contact End user Phone number
+ @param meterNumber End user zesa meter number 
+ @param customMessage message from customer,
+ */
+
+public async rechargeZesa(amount:number,contact:string,meteNumber:string,customMessage:any) {
+
+this.url = this.rootEndpoint+this.apiVersion+this.rechargeZesaCustomer;
+var payload ={"Amount":amount.toString(),"meterNumber":meteNumber,"TargetNumber":contact};
+if(customMessage!==null && customMessage!==undefined){
+  payload["CustomerSMS"] =customMessage;
+}
+
+return await this.processHttpsPostRequest(payload);
+
+
+}
+
+/**
+ Query zesa token
+ @param rechargeID
+ */
+
+ public async queryZesaToken(rechargeID:number) {
+   this.url = this.rootEndpoint+this.apiVersion+this.quereyZesaCustomerToken;
+   return await this.processHttpsPostRequest({"RechargeId":rechargeID.toString()});
+ }
 
   /**
    * Get end user balance

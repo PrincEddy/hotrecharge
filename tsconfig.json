@@ -5,6 +5,7 @@
     "declaration": true,
     "outDir": "./dist/",
     "strict": false,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
   },
   "include": [
