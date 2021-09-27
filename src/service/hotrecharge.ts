@@ -108,11 +108,11 @@ public async checkZesaMeter(meterNumber:string){
  @param customMessage message from customer,
  */
 
-public async rechargeZesa(amount:number,contact:string,meteNumber:string,customMessage:any) {
+public async rechargeZesa(amount:number,contact:string,meteNumber:string,customMessage:string  =null) {
 
 this.url = this.rootEndpoint+this.apiVersion+this.rechargeZesaCustomer;
 var payload ={"Amount":amount.toString(),"meterNumber":meteNumber,"TargetNumber":contact};
-if(customMessage!==null && customMessage!==undefined){
+if(customMessage!==null && customMessage!==undefined && customMessage!=""){
   payload["CustomerSMS"] =customMessage;
 }
 
